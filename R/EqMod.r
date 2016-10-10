@@ -65,10 +65,14 @@ EqMod <- function(M, K, Linf, t0=0, Am, As, Fmax, R0=1, Steepness=1) {
   } else {
     Fm <- -log(1-sum(C)/sum(mNf))
   }
-  
-  Pars <- data.frame(M=M, K=K, Linf=Linf, t0=t0, R0=R0, Fmax=Fmax, Fv=Fv, Fp=Fp, Fm=Fm, SPR=SPR)
+      
+  Pars <- data.frame(M=M, K=K, Linf=Linf, t0=t0, R0=R0, Fmax=Fmax, Fv=Fv, Fp=Fp,  
+					 Fm=Fm, SPR=SPR, As=As, Am=Am, 
+					 C=sum(C*Wght* RelRec), B=sum(Nf*Wght*RelRec), 
+					 Bv=sum(Nf*Wght*V*RelRec), SB=sum(Nf *Wght * Mat * RelRec))
   NatAge <- data.frame(unfished=Nuf*Wght, fished=Nf*Wght*RelRec, vulfished=Nf*Wght*V*RelRec, 
-                       matfished=Nf *Wght * Mat * RelRec, catch=C*Wght * RelRec, unfishedS=Nuf*Wght*Mat, catchN=C*RelRec)
+                       matfished=Nf *Wght * Mat * RelRec, catch=C*Wght * RelRec, 
+					   unfishedS=Nuf*Wght*Mat, catchN=C*RelRec)
   out <- list()
   out$Pars <- Pars 
   out$NatAge <- NatAge
