@@ -1,0 +1,12 @@
+Package: Fmodel
+Title: What the Package Does (one line, title case)
+Version: 0.0.0.9000
+Authors@R: person("Adrian", "Hordyk", email = "ar.hordyk@gmail.com", role = c("aut", "cre"))
+Description: Functions for examining the interpretation of fishing mortality
+    rate (F)
+Depends:
+    R (>= 3.3.1)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 5.0.1
