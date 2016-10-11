@@ -20,10 +20,10 @@ EqMod <- function(M, K, Linf, t0=0, Am, As, Fmax, R0=1, Steepness=1) {
   Lens <- Linf * (1 - exp(-K*(Ages-t0)))
   Lens[Lens<0] <- 0 
   Wght <- Lens^3
-  Fec <- Wght   
   V <- Mat <-rep(0, length(Ages))
   V[Ages >= As] <- 1 
   Mat[Ages >=Am] <- 1
+  Fec <- Wght * Mat
   Fs <- V * Fmax
   Ms <- rep(M, MaxAge) # add variable M here if needed
   Zs <- Fs + Ms 
@@ -84,7 +84,7 @@ EqMod <- function(M, K, Linf, t0=0, Am, As, Fmax, R0=1, Steepness=1) {
   } else {
     Fmb <- -log(1-sum(C*Wght)/sum(mNf))
   }  
-    
+
   Pars <- data.frame(M=M, K=K, Linf=Linf, t0=t0, R0=R0, Fmax=Fmax, 
 					 Fvn=Fvn, Fpn=Fpn, Fmn=Fmn,
 					 Fvb=Fvb, Fpb=Fpb, Fmb=Fmb,					 
