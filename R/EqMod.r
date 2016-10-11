@@ -52,24 +52,43 @@ EqMod <- function(M, K, Linf, t0=0, Am, As, Fmax, R0=1, Steepness=1) {
     recb <- (reca * UnFEgg - 1)/(R0*UnFEgg)
     RelRec <- max(0, (reca * FEgg-1)/(recb*FEgg))
   }
+  # In Numbers 
   # F - proportion of vulnerable population that is caught
   vNf <- Nf * exp(-Ms/2) * V
-  Fv <- -log(1-sum(C)/sum(vNf))
+  Fvn <- -log(1-sum(C)/sum(vNf))
   
   # F - proportion of total population that is caught
   pNf <- Nf * exp(-Ms/2) 
-  Fp <- -log(1-sum(C)/sum(pNf))
+  Fpn <- -log(1-sum(C)/sum(pNf))
   
   # F - proportion of mature population that is caught
   mNf <- Nf * exp(-Ms/2) * Mat
   if (RelRec == 0) {
-    Fm <- NA
+    Fmn <- NA
   } else {
-    Fm <- -log(1-sum(C)/sum(mNf))
+    Fmn <- -log(1-sum(C)/sum(mNf))
   }
-      
-  Pars <- data.frame(M=M, K=K, Linf=Linf, t0=t0, R0=R0, Fmax=Fmax, Fv=Fv, Fp=Fp,  
-					 Fm=Fm, SPR=SPR, As=As, Am=Am, 
+  # In Biomass 
+  # F - proportion of vulnerable population that is caught
+  vNf <- Nf * exp(-Ms/2) * V *Wght
+  Fvb <- -log(1-sum(C*Wght)/sum(vNf))
+  
+  # F - proportion of total population that is caught
+  pNf <- Nf * exp(-Ms/2) *Wght
+  Fpb <- -log(1-sum(C*Wght)/sum(pNf))
+  
+  # F - proportion of mature population that is caught
+  mNf <- Nf * exp(-Ms/2) * Mat *Wght
+  if (RelRec == 0) {
+    Fmb <- NA
+  } else {
+    Fmb <- -log(1-sum(C*Wght)/sum(mNf))
+  }  
+    
+  Pars <- data.frame(M=M, K=K, Linf=Linf, t0=t0, R0=R0, Fmax=Fmax, 
+					 Fvn=Fvn, Fpn=Fpn, Fmn=Fmn,
+					 Fvb=Fvb, Fpb=Fpb, Fmb=Fmb,					 
+					 SPR=SPR, As=As, Am=Am, 
 					 C=sum(C*Wght* RelRec), B=sum(Nf*Wght*RelRec), 
 					 Bv=sum(Nf*Wght*V*RelRec), SB=sum(Nf *Wght * Mat * RelRec))
   NatAge <- data.frame(unfished=Nuf*Wght, fished=Nf*Wght*RelRec, vulfished=Nf*Wght*V*RelRec, 
