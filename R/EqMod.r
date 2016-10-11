@@ -43,13 +43,15 @@ EqMod <- function(M, K, Linf, t0=0, Am, As, Fmax, R0=1, Steepness=1) {
   FEgg <- sum(Nf * Fec)
   SPR <- FEgg/UnFEgg
   
-  if (Steepness >0.999) Steepness <- 0.999
-  if (Steepness <0.2001) Steepness <- 0.2001
-  recK <- (4*Steepness)/(1-Steepness) # Goodyear compensation ratio
-  reca <- recK/UnFEgg
-  recb <- (reca * UnFEgg - 1)/(R0*UnFEgg)
-  RelRec <- max(0, (reca * FEgg-1)/(recb*FEgg))
-  
+  if (Steepness ==1) {
+    RelRec <- 1 
+  } else {
+    if (Steepness <0.2001) Steepness <- 0.2001
+    recK <- (4*Steepness)/(1-Steepness) # Goodyear compensation ratio
+    reca <- recK/UnFEgg
+    recb <- (reca * UnFEgg - 1)/(R0*UnFEgg)
+    RelRec <- max(0, (reca * FEgg-1)/(recb*FEgg))
+  }
   # F - proportion of vulnerable population that is caught
   vNf <- Nf * exp(-Ms/2) * V
   Fv <- -log(1-sum(C)/sum(vNf))
@@ -71,8 +73,8 @@ EqMod <- function(M, K, Linf, t0=0, Am, As, Fmax, R0=1, Steepness=1) {
 					 C=sum(C*Wght* RelRec), B=sum(Nf*Wght*RelRec), 
 					 Bv=sum(Nf*Wght*V*RelRec), SB=sum(Nf *Wght * Mat * RelRec))
   NatAge <- data.frame(unfished=Nuf*Wght, fished=Nf*Wght*RelRec, vulfished=Nf*Wght*V*RelRec, 
-                       matfished=Nf *Wght * Mat * RelRec, catch=C*Wght * RelRec, 
-					   unfishedS=Nuf*Wght*Mat, catchN=C*RelRec)
+                       matfished=Nf *Wght * Mat * RelRec, catchB=C*Wght * RelRec, 
+					   unfishedS=Nuf*Wght*Mat, catchN=C*RelRec, V=V)
   out <- list()
   out$Pars <- Pars 
   out$NatAge <- NatAge
